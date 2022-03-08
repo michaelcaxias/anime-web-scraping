@@ -1,20 +1,22 @@
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import fs from 'fs';
 import Episode from './interfaces';
 
 type EpisodesParsed = Episode[] | []
 
 const getVideoLink = async (page: puppeteer.Page): Promise<string> => {
-  return page.$eval('.jw-video.jw-reset', (element) => element.getAttribute('src'));
+  return page.$eval('.jw-video.jw-reset', (element): string => element.getAttribute('src') || '');
 }
 
 const getTitle = async (page: puppeteer.Page): Promise<string> => {
-  return page.$eval('title', (element) => element.textContent);
+  return page.$eval('title', (element): string => element.textContent || '');
 }
 
 const getAnimeTitle = async (page: puppeteer.Page): Promise<string> => {
-  const [title] = await page.$eval('.sidebar-holder.kanra-info', (element) => {
-    return [...element.childNodes].map((e) => e.textContent).filter((e) => e.trim());
+  const [title] = await page.$eval('.sidebar-holder.kanra-info', (element): string[] => {
+    return [...element.childNodes]
+    .map((e): string => e.textContent || '')
+    .filter((e): string => e.trim());
   });
   return title;
 }
