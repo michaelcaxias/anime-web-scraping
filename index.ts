@@ -47,12 +47,13 @@ const navigationPage = async (browser: puppeteer.Browser, index: number): Promis
   
   addInfoToAnimesJSON(episodeFormat);
   console.log(videoLink ? 'SUCCESS: could get video link' : "ERROR: couldn't get src");
+  console.log(`Current page is ${index}`);
 
   page.close();
 }
 
-const MIN = 21;
-const MAX = 21;
+const MIN = 1;
+const MAX = 20;
 
 const main = async () => {
   const browser: puppeteer.Browser = await puppeteer.launch({

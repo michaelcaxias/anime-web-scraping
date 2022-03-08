@@ -1,6 +1,6 @@
 export default interface Episode {
-  anime?: string,
+  anime: string,
   title: string,
-  episode?: number | undefined;
+  episode: number | undefined;
   video_link: string,
 }
