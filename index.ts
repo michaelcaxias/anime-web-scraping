@@ -1,30 +1,33 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs');
+import * as puppeteer from 'puppeteer';
+import fs from 'fs';
+import Episode from './interfaces';
 
-const getVideoLink = async (page) => {
+type EpisodesParsed = Episode[] | []
+
+const getVideoLink = async (page: puppeteer.Page): Promise<string> => {
   return page.$eval('.jw-video.jw-reset', (element) => element.getAttribute('src'));
 }
 
-const getTitle = async (page) => {
+const getTitle = async (page: puppeteer.Page): Promise<string> => {
   return page.$eval('title', (element) => element.textContent);
 }
 
-const getAnimeTitle = async (page) => {
+const getAnimeTitle = async (page: puppeteer.Page): Promise<string> => {
   const [title] = await page.$eval('.sidebar-holder.kanra-info', (element) => {
     return [...element.childNodes].map((e) => e.textContent).filter((e) => e.trim());
   });
   return title;
 }
 
-const addInfoToAnimesJSON = (formatJSON) => {
+const addInfoToAnimesJSON = (formatJSON: Episode): void => {
   const episodesJSON = fs.readFileSync('./animes.json', 'utf8');
-  const episodesParsed = JSON.parse(episodesJSON);
+  const episodesParsed: EpisodesParsed = JSON.parse(episodesJSON);
   const addNewEpisode = [...episodesParsed, formatJSON];
   fs.writeFileSync('./animes.json', JSON.stringify(addNewEpisode));
   console.log('Added new episode to animes.json');
 };
 
-const navigationPage = async (browser, index) => {
+const navigationPage = async (browser: puppeteer.Browser, index: number): Promise<void> => {
   const URL = `https://goyabu.com/videos/${index}/`
   const page = await browser.newPage();
   await page.goto(URL);
@@ -33,9 +36,7 @@ const navigationPage = async (browser, index) => {
     getVideoLink(page), getTitle(page), getAnimeTitle(page),
   ])
   
-  console.log(animeTitle);
-
-  const episodeFormat = {
+  const episodeFormat: Episode = {
     anime: animeTitle,
     title: title,
     episode: 0,
@@ -52,7 +53,7 @@ const MIN = 21;
 const MAX = 21;
 
 const main = async () => {
-  const browser = await puppeteer.launch({
+  const browser: puppeteer.Browser = await puppeteer.launch({
     executablePath: '/usr/bin/google-chrome',
     headless:true, 
     defaultViewport:null,
