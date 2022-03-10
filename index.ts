@@ -21,6 +21,13 @@ const getAnimeTitle = async (page: puppeteer.Page): Promise<string> => {
   return title;
 }
 
+const getEpisodeNumber = (string: string): string => {
+  return string
+    .split('Episódio')[1]
+    ?.split('')
+    .filter((letter) => Number(letter)).join('') || '';
+}
+
 const addInfoToAnimesJSON = (formatJSON: Episode): void => {
   const episodesJSON = fs.readFileSync('./animes.json', 'utf8');
   const episodesParsed: EpisodesParsed = JSON.parse(episodesJSON);
@@ -30,6 +37,7 @@ const addInfoToAnimesJSON = (formatJSON: Episode): void => {
 };
 
 const navigationPage = async (browser: puppeteer.Browser, index: number): Promise<void> => {
+  console.log(`---------- ${index} ----------`);
   const URL = `https://goyabu.com/videos/${index}/`
   const page = await browser.newPage();
   await page.goto(URL);
@@ -37,7 +45,9 @@ const navigationPage = async (browser: puppeteer.Browser, index: number): Promis
   const [videoLink, title, animeTitle] = await Promise.all([
     getVideoLink(page), getTitle(page), getAnimeTitle(page),
   ])
-  
+
+  console.log(getEpisodeNumber(animeTitle));
+
   const episodeFormat: Episode = {
     anime: animeTitle,
     title: title,
@@ -47,13 +57,12 @@ const navigationPage = async (browser: puppeteer.Browser, index: number): Promis
   
   addInfoToAnimesJSON(episodeFormat);
   console.log(videoLink ? 'SUCCESS: could get video link' : "ERROR: couldn't get src");
-  console.log(`Current page is ${index}`);
 
   page.close();
 }
 
-const MIN = 1;
-const MAX = 20;
+const MIN = 26;
+const MAX = 26;
 
 const main = async () => {
   const browser: puppeteer.Browser = await puppeteer.launch({
