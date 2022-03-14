@@ -22,10 +22,9 @@ const getAnimeTitle = async (page: puppeteer.Page): Promise<string> => {
 }
 
 const getEpisodeNumber = (string: string): string => {
-  return string
-    .split('Episódio')[1]
-    ?.split('')
-    .filter((letter) => Number(letter)).join('') || '';
+  const regex = /(?:OVA|Episódio|Episodio)\s*(\d+)/gi;
+  const [_, episode] = [...string.matchAll(regex)][0];
+  return episode;
 }
 
 const addInfoToAnimesJSON = (formatJSON: Episode): void => {
@@ -46,12 +45,12 @@ const navigationPage = async (browser: puppeteer.Browser, index: number): Promis
     getVideoLink(page), getTitle(page), getAnimeTitle(page),
   ])
 
-  console.log(getEpisodeNumber(animeTitle));
+  const animeEpisode = Number(getEpisodeNumber(title))
 
   const episodeFormat: Episode = {
     anime: animeTitle,
     title: title,
-    episode: 0,
+    episode: animeEpisode,
     video_link: videoLink,
   }
   
@@ -61,14 +60,14 @@ const navigationPage = async (browser: puppeteer.Browser, index: number): Promis
   page.close();
 }
 
-const MIN = 26;
-const MAX = 26;
+const MIN = 1;
+const MAX = 25;
 
 const main = async () => {
   const browser: puppeteer.Browser = await puppeteer.launch({
     executablePath: '/usr/bin/google-chrome',
-    headless:true, 
-    defaultViewport:null,
+    headless: true, 
+    defaultViewport: null,
     devtools: true,
     args: ["--window-size=1920,1080", "--window-position=1921,0"]
   });
