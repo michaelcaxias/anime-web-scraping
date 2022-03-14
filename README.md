@@ -29,3 +29,12 @@ const MAX = 25;
 ```bash
 npm start
 ```
+
+## Pontos de observação
+
+-  ⚠️ Não se esqueça de formatar o documento `animes.json` para que fique legível.
+
+| ![preview](https://i.imgur.com/eoyAlgS.png) | 
+| :---: |
+| Executando o atalho `CTRL + SHIFT + P` com a opção "Format Document" selecionada |
+
