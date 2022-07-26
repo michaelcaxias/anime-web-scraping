@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import fs from 'fs';
+import * as readlineSync from 'readline-sync';
 import Episode from './interfaces';
 
 type EpisodesParsed = Episode[] | []
@@ -60,10 +61,11 @@ const navigationPage = async (browser: puppeteer.Browser, index: number): Promis
   page.close();
 }
 
-const MIN = 1;
-const MAX = 25;
 
 const main = async () => {
+  const MIN = readlineSync.question('Número inicial de episódios: ');
+  const MAX = readlineSync.question('Número máximo de episódios: ');
+
   const browser: puppeteer.Browser = await puppeteer.launch({
     executablePath: '/usr/bin/google-chrome',
     headless: true, 

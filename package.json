@@ -14,6 +14,7 @@
     "fs": "^0.0.1-security",
     "puppeteer": "^13.5.0",
     "puppeteer-core": "^13.5.0",
+    "readline-sync": "^1.4.10",
     "typescript": "^4.6.2"
   },
   "devDependencies": {
