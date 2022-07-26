@@ -1,15 +1,13 @@
-## Antes de iniciar, instale as dependências
+# Anime Web Scraping (raspagem de dados)
+
+Script de raspagem de dados do site [Goyabu](https://goyabu.com/), tais como nome, número e video de episódios.
+
+### Antes de iniciar, instale as dependências
 
 ```bash
 npm install
 ```
-
-#### Instale o `ts-node` globalmente
-
-```bash
-npm i -g ts-node
-```
-## Altere as linhas 63 e 64 do `index.ts` para definir o mínimo e máximo de animes que serão extraídos.
+### Altere as linhas 63 e 64 do `index.ts` para definir o mínimo e máximo de animes que serão extraídos.
 
 > ⚠️ Lembre-se de observar o arquivo `animes.json` antes de iniciar o processo para verificar os animes já mapeados.
 
@@ -24,13 +22,13 @@ const MAX = 25;
 ```
 
 
-## Para iniciar o script, rode o comando abaixo:
+### Para iniciar o script, rode o comando abaixo:
 
 ```bash
 npm start
 ```
 
-## Pontos de observação
+### Pontos de observação
 
 -  ⚠️ Não se esqueça de formatar o documento `animes.json` para que fique legível.
 
